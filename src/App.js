@@ -19,20 +19,6 @@ function App() {
     getHolidays();
   }, []);
 
-  // const getHolidays = async () => {
-  //   try {
-  //     const response = await axios.get('https://date.nager.at/api/v3/NextPublicHolidaysWorldwide');
-  //     if (response.status === 200) {
-  //       const holidaysObj = {};
-  //       response.data.forEach(holiday => {
-  //         holidaysObj[holiday.date] = holiday.name;
-  //       });
-  //       setHolidays(holidaysObj);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching holidays:', error);
-  //   }
-  // };
   const getHolidays = async () => {
     try {
       const response = await axios.get('https://date.nager.at/api/v3/NextPublicHolidaysWorldwide');
@@ -41,9 +27,9 @@ function App() {
         response.data.forEach(holiday => {
           const date = holiday.date;
           if (!holidaysObj[date]) {
-            holidaysObj[date] = [holiday.name]; // Initialize with an array
+            holidaysObj[date] = [holiday.name]; 
           } else {
-            holidaysObj[date].push(holiday.name); // Append to the array
+            holidaysObj[date].push(holiday.name); 
           }
         });
         setHolidays(holidaysObj);
@@ -77,13 +63,13 @@ function App() {
       const newTasks = { ...tasks };
       const sourceTask = newTasks[sourceDay][sourceIndex];
 
-      // Remove the task from the source day
+      
       newTasks[sourceDay].splice(sourceIndex, 1);
 
-      // Insert the task at the target index in the target day
+     
       newTasks[targetDay].splice(targetIndex, 0, sourceTask);
 
-      // Update the tasks state
+     
       setTasks(newTasks);
     } catch (error) {
       console.log(error);
@@ -98,20 +84,19 @@ function App() {
 
       const newTasks = { ...tasks };
 
-      // Initialize targetDay if it's not already initialized
+    
       if (!newTasks[targetDay]) {
         newTasks[targetDay] = [];
       }
 
       const sourceTask = newTasks[sourceDay][sourceIndex];
 
-      // Remove the task from the source day
+     
       newTasks[sourceDay].splice(sourceIndex, 1);
 
-      // Insert the task at the end of the target day
+     
       newTasks[targetDay].push(sourceTask);
 
-      // Update the tasks state
       setTasks(newTasks);
     } catch (error) {
       console.log(error);
@@ -121,7 +106,7 @@ function App() {
 
   const getDateForDay = (day) => {
     const today = new Date();
-    today.setDate(day + 1); // Adding 1 to match the day with the date
+    today.setDate(day + 1);
     const year = today.getFullYear();
     let month = today.getMonth() + 1;
     month = month < 10 ? '0' + month : month;
@@ -168,7 +153,7 @@ function App() {
 
   const [filteredTasks, setFilteredTasks] = useState({});
 
-  // Update Filtering Logic
+ 
   useEffect(() => {
     const filtered = {};
     Object.keys(tasks).forEach(day => {
@@ -180,7 +165,7 @@ function App() {
 
   const getDayOfWeek = (date) => {
     const day = date.getDay();
-    return day === 0 ? 6 : day - 1; // Adjust Sunday (0) to 6
+    return day === 0 ? 6 : day - 1; 
   };
   
   const currentDate = new Date();
