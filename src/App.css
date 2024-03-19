@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,137 @@
   to {
     transform: rotate(360deg);
   }
+} */
+body{
+  font-family: "Times New Roman", Times, serif;
+}
+.calendar {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.searching{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 20px;
+  border: 1px solid grey;
+  width: 30%;
+  padding: 10px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+.searching img{
+  width: 15px;
+  height: 15px;
+}
+.searching input{
+  border: none;
+  outline: none;
+  width: 100%;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-gap: 5px;
+}
+
+.calendar-cell {
+  border: 1px solid #ccc;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: rgb(224, 223, 223);
+}
+
+.calendar-cell input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.highlight {
+  background-color: #ffffcc;
+}
+.holiday-div{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 5px;
+}
+.holiday-span{
+  background: blue;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+.task-name{
+  background: white;
+ cursor: grab;
+ word-wrap: break-word;
+ width: 160px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  padding: 6px;
+  font-size: 18px;
+
+}
+.saveandcancel{
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+.save,.cancel{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255, 255, 255);
+  /* border: none; */
+  gap: 5px;
+  color: black;
+  /* width: 50px; */
+  cursor: pointer;
+  border: 2px solid green;
+  height: 25px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.cancel{
+  border: 2px solid red;
+}
+.add-btn{
+  display: flex;
+  align-items: center;
+  width: 110px;
+  gap: 5px;
+  background: white;
+  /* border: none; */
+  border-radius: 10px;
+  /* width: 50px; */
+  cursor: pointer;
+  font-weight: 600;
+  border: 2px solid blue;
+}
+.save-btn{
+  width: 25px;
+  height: 25px;
+}
+.cancel-btn{
+  width: 15px;
+  height: 15px;
+}
+.task-design{
+  width: 50px;
+  border-radius: 10px;
+  height: 5px;
+  background: green;
 }
