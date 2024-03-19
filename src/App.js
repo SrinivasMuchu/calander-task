@@ -95,29 +95,29 @@ function App() {
       e.preventDefault();
       const sourceData = JSON.parse(e.dataTransfer.getData('text/plain'));
       const { day: sourceDay, index: sourceIndex } = sourceData;
-  
+
       const newTasks = { ...tasks };
-  
+
       // Initialize targetDay if it's not already initialized
       if (!newTasks[targetDay]) {
         newTasks[targetDay] = [];
       }
-  
+
       const sourceTask = newTasks[sourceDay][sourceIndex];
-  
+
       // Remove the task from the source day
       newTasks[sourceDay].splice(sourceIndex, 1);
-  
+
       // Insert the task at the end of the target day
       newTasks[targetDay].push(sourceTask);
-  
+
       // Update the tasks state
       setTasks(newTasks);
     } catch (error) {
       console.log(error);
     }
   };
-  
+
 
   const getDateForDay = (day) => {
     const today = new Date();
@@ -176,6 +176,16 @@ function App() {
     });
     setFilteredTasks(filtered);
   }, [searchTerm, tasks]);
+
+
+  const getDayOfWeek = (date) => {
+    const day = date.getDay();
+    return day === 0 ? 6 : day - 1; // Adjust Sunday (0) to 6
+  };
+  
+  const currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1;  
   return (
     <div className="calendar">
       <div className='searching'>
@@ -194,6 +204,10 @@ function App() {
         ))}
       </div>
       <div className="calendar-grid">
+        {/* Render empty placeholders for the days before the first day of the month */}
+        {[...Array(getDayOfWeek(new Date(year, month - 1, 1))).keys()].map((day, index) => (
+          <div key={`empty-${index}`} className="calendar-cell"></div>
+        ))}
 
         {[...Array(31).keys()].map(day => (
           <div
@@ -220,15 +234,15 @@ function App() {
                         onChange={(e) => setNewTaskText(e.target.value)}
                       />
                       <div className='saveandcancel'>
-                      <button onClick={handleSaveTask} className='save' ><img src={saveImg} alt='' className='save-btn'/>Save</button>
-                      <button onClick={handleCancelEdit} className='cancel' ><img src={cancelImg} alt='' className='cancel-btn'/>Cancel</button>
+                        <button onClick={handleSaveTask} className='save' ><img src={saveImg} alt='' className='save-btn' />Save</button>
+                        <button onClick={handleCancelEdit} className='cancel' ><img src={cancelImg} alt='' className='cancel-btn' />Cancel</button>
                       </div>
-                      
+
                     </div>
                   ) : (
                     <div onClick={() => handleEditTask(day, index, task?.task)} className='task-name'>
                       <div className='task-design'></div>
-                      <span>{task?.task}</span>
+                      <span >{task?.task}</span>
                     </div>
                   )}
                 </div>
@@ -240,14 +254,14 @@ function App() {
                   value={newTaskText}
                   onChange={(e) => setNewTaskText(e.target.value)}
                 />
-                 <div className='saveandcancel'>
-                      <button onClick={handleSaveTask} className='save' style={{color:'green'}}><img src={saveImg} alt='' className='save-btn'/>Save</button>
-                      <button onClick={handleCancelEdit} className='save' style={{color:'red'}}><img src={cancelImg} alt='' className='cancel-btn'/>Cancel</button>
-                      </div>
+                <div className='saveandcancel'>
+                  <button onClick={handleSaveTask} className='save' style={{ color: 'green' }}><img src={saveImg} alt='' className='save-btn' />Save</button>
+                  <button onClick={handleCancelEdit} className='save' style={{ color: 'red' }}><img src={cancelImg} alt='' className='cancel-btn' />Cancel</button>
+                </div>
               </div>
             )}
             {!isAddingTask && (
-              <button onClick={() => handleAddTask(day)} className='add-btn'><img src={addImg} alt='' className='save-btn'/>Add Task</button>
+              <button onClick={() => handleAddTask(day)} className='add-btn'><img src={addImg} alt='' className='save-btn' />Add Task</button>
             )}
             {/* <ul>
               {holidays[getDateForDay(day)] && <li>{holidays[getDateForDay(day)]}</li>}
