@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import searchImg from './assets/search.png'
 import editImg from './assets/edit.png'
 import saveImg from './assets/save.png'
+import deleteImg from './assets/delete.png'
 import addImg from './assets/add.png'
 import cancelImg from './assets/cancel.png'
 import axios from 'axios';
@@ -139,7 +140,21 @@ function App() {
     setTasks(newTasks);
     setNewTaskText('');
   };
-
+  const handleDeleteTask = (e) => {
+    e.stopPropagation();
+    setSearchTerm('');
+    setIsAddingTask(false);
+    setEditingTask({ day: null, index: null });
+    
+    const newTasks = { ...tasks };
+    if (newTasks[editingTask.day] && newTasks[editingTask.day][editingTask.index]) {
+      // Remove the task from the newTasks object
+      newTasks[editingTask.day].splice(editingTask.index, 1);
+      setTasks(newTasks);
+      setNewTaskText('');
+    }
+  };
+  
   const handleEditTask = (day, index, taskText,e) => {
     e.stopPropagation()
     setEditingTask({ day, index });
@@ -249,8 +264,9 @@ function App() {
                         onChange={(e) => handleInputStop(e)}
                       />
                       <div className='saveandcancel'>
-                        <button onClick={(e) => handleSaveTask(e)} className='save' ><img src={saveImg} alt='' className='save-btn' />Save</button>
-                        <button onClick={(e) => handleCancelEdit(e)} className='cancel' ><img src={cancelImg} alt='' className='cancel-btn' />Cancel</button>
+                        <button style={{border:'none'}} onClick={(e) => handleSaveTask(e)} className='save' ><img src={saveImg} alt='' className='save-btn' /></button>
+                        <button style={{border:'none'}} onClick={(e) => handleCancelEdit(e)} className='cancel' ><img src={cancelImg} alt='' className='cancel-btn' /></button>
+                        <button style={{border:'none'}} onClick={(e) => handleDeleteTask(e)} className='save' ><img src={deleteImg} alt='' className='save-btn' /></button>
                       </div>
 
                     </div>
@@ -272,6 +288,7 @@ function App() {
                 <div className='saveandcancel'>
                   <button onClick={(e) => handleSaveTask(e)} className='save' style={{ color: 'green' }}><img src={saveImg} alt='' className='save-btn' />Save</button>
                   <button onClick={(e) => handleCancelEdit(e)} className='save' style={{ color: 'red' }}><img src={cancelImg} alt='' className='cancel-btn' />Cancel</button>
+                  
                 </div>
               </div>
             )}
