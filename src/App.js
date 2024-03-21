@@ -181,7 +181,10 @@ function App() {
   const calculateTaskCount = (day) => {
     return filteredTasks[day] ? filteredTasks[day].length : 0;
   };
-
+  const handleInputStop=(e)=>{
+    e.stopPropagation()
+    setNewTaskText(e.target.value)
+  }
   return (
     <div className="calendar">
       <div className='top-bar'>
@@ -243,7 +246,7 @@ function App() {
                       <input
                         type="text"
                         value={newTaskText}
-                        onChange={(e) => setNewTaskText(e.target.value)}
+                        onChange={(e) => handleInputStop(e)}
                       />
                       <div className='saveandcancel'>
                         <button onClick={(e) => handleSaveTask(e)} className='save' ><img src={saveImg} alt='' className='save-btn' />Save</button>
