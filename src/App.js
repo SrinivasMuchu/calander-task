@@ -27,9 +27,9 @@ function App() {
         response.data.forEach(holiday => {
           const date = holiday.date;
           if (!holidaysObj[date]) {
-            holidaysObj[date] = [holiday.name]; 
+            holidaysObj[date] = [holiday.name];
           } else {
-            holidaysObj[date].push(holiday.name); 
+            holidaysObj[date].push(holiday.name);
           }
         });
         setHolidays(holidaysObj);
@@ -63,13 +63,13 @@ function App() {
       const newTasks = { ...tasks };
       const sourceTask = newTasks[sourceDay][sourceIndex];
 
-      
+
       newTasks[sourceDay].splice(sourceIndex, 1);
 
-     
+
       newTasks[targetDay].splice(targetIndex, 0, sourceTask);
 
-     
+
       setTasks(newTasks);
     } catch (error) {
       console.log(error);
@@ -84,17 +84,17 @@ function App() {
 
       const newTasks = { ...tasks };
 
-    
+
       if (!newTasks[targetDay]) {
         newTasks[targetDay] = [];
       }
 
       const sourceTask = newTasks[sourceDay][sourceIndex];
 
-     
+
       newTasks[sourceDay].splice(sourceIndex, 1);
 
-     
+
       newTasks[targetDay].push(sourceTask);
 
       setTasks(newTasks);
@@ -128,7 +128,8 @@ function App() {
     setEditingTask({ day, index: tasks[day]?.length || 0 });
   };
 
-  const handleSaveTask = () => {
+  const handleSaveTask = (e) => {
+    e.stopPropagation()
     setSearchTerm('')
     setIsAddingTask(false);
     setEditingTask({ day: null, index: null });
@@ -144,7 +145,8 @@ function App() {
     setNewTaskText(taskText);
   };
 
-  const handleCancelEdit = () => {
+  const handleCancelEdit = (e) => {
+    e.stopPropagation()
     setIsAddingTask(false);
     setEditingTask({ day: null, index: null });
     setNewTaskText('');
@@ -153,7 +155,7 @@ function App() {
 
   const [filteredTasks, setFilteredTasks] = useState({});
 
- 
+
   useEffect(() => {
     const filtered = {};
     Object.keys(tasks).forEach(day => {
@@ -165,33 +167,52 @@ function App() {
 
   const getDayOfWeek = (date) => {
     const day = date.getDay();
-    return day === 0 ? 6 : day - 1; 
+    return day === 0 ? 6 : day - 1;
   };
-  
+
   const currentDate = new Date();
   const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1;  
+  const month = currentDate.getMonth() + 1;
+  const getMonthName = (monthNumber) => {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return months[monthNumber - 1];
+  };
+  const calculateTaskCount = (day) => {
+    return filteredTasks[day] ? filteredTasks[day].length : 0;
+  };
+
   return (
     <div className="calendar">
-      <div className='searching'>
-        <img src={searchImg} alt='' />
-        <input
-          type="text"
-          placeholder="Search tasks"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className='top-bar'>
+        <div className='searching'>
+          <img src={searchImg} alt='' />
+          <input
+            type="text"
+            placeholder="Search tasks"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <span>MARCH 2018</span>
+        <div className='top-btns'>
+        <button>Today</button>
+          <button>Week</button>
+          <button>Month</button>
+          
+        </div>
       </div>
+
 
       <div className="calendar-grid">
         {[...Array(7).keys()].map(day => (
-          <div key={day} className="day">{getDayName(day)}</div>
+          <div key={day} className="calendar-cell-day">{getDayName((day + 3) % 7)}</div>
         ))}
       </div>
+
       <div className="calendar-grid">
         {/* Render empty placeholders for the days before the first day of the month */}
         {[...Array(getDayOfWeek(new Date(year, month - 1, 1))).keys()].map((day, index) => (
-          <div key={`empty-${index}`} className="calendar-cell"></div>
+          <div key={`empty-${index}`} className="calendar-cell" style={{cursor:'context-menu'}}></div>
         ))}
 
         {[...Array(31).keys()].map(day => (
@@ -200,8 +221,13 @@ function App() {
             className="calendar-cell"
             onDragOver={(e) => handleDragOver(e)}
             onDrop={(e) => handleDayDrop(e, day)}
+            onClick={() => handleAddTask(day)}
           >
-            <div className="day-number">{day + 1}</div>
+            <div className="day-number">
+              {getMonthName(month)} {day + 1}<span className='cards'> {calculateTaskCount(day) > 0 ? `${calculateTaskCount(day)} cards` : ''}</span>
+            </div>
+
+
             {filteredTasks[day] &&
               filteredTasks[day].map((task, index) => (
                 <div
@@ -219,8 +245,8 @@ function App() {
                         onChange={(e) => setNewTaskText(e.target.value)}
                       />
                       <div className='saveandcancel'>
-                        <button onClick={handleSaveTask} className='save' ><img src={saveImg} alt='' className='save-btn' />Save</button>
-                        <button onClick={handleCancelEdit} className='cancel' ><img src={cancelImg} alt='' className='cancel-btn' />Cancel</button>
+                        <button onClick={(e) => handleSaveTask(e)} className='save' ><img src={saveImg} alt='' className='save-btn' />Save</button>
+                        <button onClick={(e) => handleCancelEdit(e)} className='cancel' ><img src={cancelImg} alt='' className='cancel-btn' />Cancel</button>
                       </div>
 
                     </div>
@@ -240,14 +266,14 @@ function App() {
                   onChange={(e) => setNewTaskText(e.target.value)}
                 />
                 <div className='saveandcancel'>
-                  <button onClick={handleSaveTask} className='save' style={{ color: 'green' }}><img src={saveImg} alt='' className='save-btn' />Save</button>
-                  <button onClick={handleCancelEdit} className='save' style={{ color: 'red' }}><img src={cancelImg} alt='' className='cancel-btn' />Cancel</button>
+                  <button onClick={(e) => handleSaveTask(e)} className='save' style={{ color: 'green' }}><img src={saveImg} alt='' className='save-btn' />Save</button>
+                  <button onClick={(e) => handleCancelEdit(e)} className='save' style={{ color: 'red' }}><img src={cancelImg} alt='' className='cancel-btn' />Cancel</button>
                 </div>
               </div>
             )}
-            {!isAddingTask && (
-              <button onClick={() => handleAddTask(day)} className='add-btn'><img src={addImg} alt='' className='save-btn' />Add Task</button>
-            )}
+            {/* {!isAddingTask && (
+              <button  className='add-btn'><img src={addImg} alt='' className='save-btn' />Add Task</button>
+            )} */}
             {/* <ul>
               {holidays[getDateForDay(day)] && <li>{holidays[getDateForDay(day)]}</li>}
             </ul> */}

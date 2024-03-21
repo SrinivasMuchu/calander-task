@@ -70,7 +70,32 @@ body{
   grid-template-columns: repeat(7, 1fr);
   grid-gap: 5px;
 }
-
+.top-bar{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.top-bar span{
+  font-size: 34px;
+  font-weight: 700;
+}
+.top-btns{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.top-btns button{
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+}
+.cards{
+  color: grey;
+  font-size: 14px;
+}
 .calendar-cell {
   border: 1px solid #ccc;
   padding: 5px;
@@ -78,8 +103,17 @@ body{
   flex-direction: column;
   gap: 5px;
   background: rgb(224, 223, 223);
+  width: 165px;
+  height: 200px;
+  overflow-y: scroll;
+  cursor: pointer;
 }
-
+.calendar-cell-day{
+  width: 180px;
+}
+.calendar-cell::-webkit-scrollbar{
+  display: none;
+}
 .calendar-cell input {
   width: 100%;
   box-sizing: border-box;
