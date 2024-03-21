@@ -140,7 +140,8 @@ function App() {
     setNewTaskText('');
   };
 
-  const handleEditTask = (day, index, taskText) => {
+  const handleEditTask = (day, index, taskText,e) => {
+    e.stopPropagation()
     setEditingTask({ day, index });
     setNewTaskText(taskText);
   };
@@ -251,7 +252,7 @@ function App() {
 
                     </div>
                   ) : (
-                    <div onClick={() => handleEditTask(day, index, task?.task)} className='task-name'>
+                    <div onClick={(e) => handleEditTask(day, index, task?.task,e)} className='task-name'>
                       <div className='task-design'></div>
                       <span >{task?.task}</span>
                     </div>
